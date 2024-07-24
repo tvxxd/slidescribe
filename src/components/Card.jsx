@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Trash from "../icons/Trash";
-import { text } from "@fortawesome/fontawesome-svg-core";
+import { setNewOffset } from "../utils/setNewOffset";
 
 export default function Card({ note }) {
   const body = JSON.parse(note.body);
@@ -29,11 +29,6 @@ export default function Card({ note }) {
     document.addEventListener("mouseup", mouseUp);
   }
 
-  function mouseUp() {
-    document.removeEventListener("mousemove", mouseMove);
-    document.removeEventListener("mouseup", mouseUp);
-  }
-
   function mouseMove(e) {
     const mouseMoveDirection = {
       x: mouseStartPosition.x - e.clientX,
@@ -43,10 +38,14 @@ export default function Card({ note }) {
     mouseStartPosition.x = e.clientX;
     mouseStartPosition.y = e.clientY;
 
-    setPosition({
-      x: cardRef.current.offsetLeft - mouseMoveDirection.x,
-      y: cardRef.current.offsetTop - mouseMoveDirection.y,
-    });
+    const newPosition = setNewOffset(cardRef.current, mouseMoveDirection);
+
+    setPosition(newPosition);
+  }
+
+  function mouseUp() {
+    document.removeEventListener("mousemove", mouseMove);
+    document.removeEventListener("mouseup", mouseUp);
   }
 
   return (
