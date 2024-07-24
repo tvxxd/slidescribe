@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Trash from "../icons/Trash";
 import { setNewOffset } from "../utils/setNewOffset";
+import { autoGrow } from "../utils/autoGrow";
+import { bodyParser } from "../utils/bodyParser";
+import { setZIndex } from "../utils/zIndex";
 
 export default function Card({ note }) {
-  const body = JSON.parse(note.body);
+  const body = bodyParser(note.body);
   const colors = JSON.parse(note.colors);
   const [position, setPosition] = useState(JSON.parse(note.position));
 
@@ -15,13 +18,8 @@ export default function Card({ note }) {
     autoGrow(textAreaRef);
   }, []);
 
-  function autoGrow(textarea) {
-    const { current } = textarea;
-    current.style.height = "auto";
-    current.style.height = current.scrollHeight + "px";
-  }
-
   function mouseDown(e) {
+    setZIndex(cardRef.current);
     mouseStartPosition.x = e.clientX;
     mouseStartPosition.y = e.clientY;
 
@@ -74,6 +72,7 @@ export default function Card({ note }) {
           onInput={() => {
             autoGrow(textAreaRef);
           }}
+          onFocus={() => setZIndex(cardRef.current)}
         ></textarea>
       </div>
     </div>
