@@ -37,10 +37,14 @@ body {
     0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
 }
 
-.card-body-border {
-  border-radius: 0 0 5px 5px;
+#controls {
+  transform: translateY(-50%);
+  box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+    0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075),
+    0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
 }
 
-.card-header-border {
-  border-radius: 5px 5px 0 0;
+#add-btn {
+  background-color: rgba(107, 107, 107, 1);
+  transition: 0.3s;
 }
