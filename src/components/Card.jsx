@@ -46,7 +46,17 @@ export default function Card({ note }) {
     document.removeEventListener("mousemove", mouseMove);
     document.removeEventListener("mouseup", mouseUp);
 
-    updateNotes(note.id, "position", position);
+    /*
+      since state updates are asynchronous, 'pos' might not be updated
+      when calling updateNotes(). pass 'pos' directly to updateNotes.
+    */
+
+    const newPosition = {
+      x: parseInt(cardRef.current.style.left),
+      y: parseInt(cardRef.current.style.top),
+    };
+
+    updateNotes(note.id, "position", newPosition);
   }
 
   return (
