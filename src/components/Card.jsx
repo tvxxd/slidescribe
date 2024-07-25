@@ -57,13 +57,13 @@ export default function Card({ note }) {
       }}
     >
       <div
-        className="card-header card-header-border flex justify-between items-center p-[5px]"
+        className="card-header rounded-t flex justify-between items-center p-[5px]"
         style={{ backgroundColor: colors.colorHeader }}
         onMouseDown={mouseDown}
       >
         <Trash />
       </div>
-      <div className="card-body card-body-border p-4">
+      <div className="card-body rounded-b p-4">
         <textarea
           ref={textAreaRef}
           className=" bg-inherit border-0 w-full h-full resize-none text-base focus:outline-none focus:w-full focus:h-full"

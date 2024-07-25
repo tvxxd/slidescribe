@@ -6,7 +6,8 @@ export default function Color({ color }) {
   return (
     <div
       onClick={changeColor}
-      className="color"
+      id="color"
+      className="bg-gray-300 w-7 h-7 rounded-full cursor-pointer hover:scale-110"
       style={{ backgroundColor: color.colorHeader }}
     ></div>
   );

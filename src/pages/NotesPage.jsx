@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card.jsx";
 import { getNotes } from "../supabase/apiNotes.js";
+import Controls from "../components/Controls.jsx";
+
 export default function NotesPage() {
   const [notes, setNotes] = useState([]);
 
@@ -17,6 +19,7 @@ export default function NotesPage() {
       {notes.map((note) => (
         <Card key={note.id} note={note} />
       ))}
+      <Controls />
     </div>
   );
 }

@@ -1,9 +1,17 @@
 import AddButton from "./AddButton";
+import colors from "../assets/colors.json";
+import Color from "./Color";
 
 export default function Controls() {
   return (
-    <div id="controls flex flex-column gap-4 items-center fixed left-4 top-1/2 bg-[#35363e] p-4 z-[10000]">
+    <div
+      id="controls"
+      className="flex gap-4 items-center fixed top-9 left-1/2 bg-[#35363e] p-3 z-[10000] rounded"
+    >
       <AddButton />
+      {colors.map((color) => (
+        <Color key={color.id} color={color} />
+      ))}
     </div>
   );
 }
