@@ -1,0 +1,32 @@
+[
+  {
+    "id": "color-orange",
+    "colorHeader": "#F4A261",
+    "colorBody": "#F7B383",
+    "colorText": "#18181A"
+  },
+  {
+    "id": "color-purple",
+    "colorHeader": "#C9A9E8",
+    "colorBody": "#D3B5F2",
+    "colorText": "#18181A"
+  },
+  {
+    "id": "color-red",
+    "colorHeader": "#F08080",
+    "colorBody": "#F5A5A5",
+    "colorText": "#18181A"
+  },
+  {
+    "id": "color-yellow",
+    "colorHeader": "#F7D358",
+    "colorBody": "#F9E48B",
+    "colorText": "#18181A"
+  },
+  {
+    "id": "color-pink",
+    "colorHeader": "#F7A4A4",
+    "colorBody": "#F8B6B6",
+    "colorText": "#18181A"
+  }
+]
