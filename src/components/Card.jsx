@@ -4,6 +4,7 @@ import { setNewOffset } from "../utils/setNewOffset";
 import { autoGrow } from "../utils/autoGrow";
 import { bodyParser } from "../utils/bodyParser";
 import { setZIndex } from "../utils/zIndex";
+import { updateNotes } from "../supabase/apiNotes";
 
 export default function Card({ note }) {
   const body = bodyParser(note.body);
@@ -44,6 +45,8 @@ export default function Card({ note }) {
   function mouseUp() {
     document.removeEventListener("mousemove", mouseMove);
     document.removeEventListener("mouseup", mouseUp);
+
+    updateNotes(note.id, "position", position);
   }
 
   return (
@@ -71,6 +74,7 @@ export default function Card({ note }) {
           defaultValue={body}
           onInput={() => {
             autoGrow(textAreaRef);
+            updateNotes(note.id, "body", textAreaRef.current.value);
           }}
           onFocus={() => setZIndex(cardRef.current)}
         ></textarea>

@@ -9,3 +9,14 @@ export async function getNotes() {
 
   return data;
 }
+
+export async function updateNotes(id, key, value) {
+  const payload = { [key]: JSON.stringify(value) };
+  const { data, error } = await supabase
+    .from("notes")
+    .update(payload)
+    .eq("id", id);
+  if (error) {
+    throw error;
+  }
+}
