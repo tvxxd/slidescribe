@@ -14,6 +14,7 @@ export default function Card({ note }) {
   const [updating, setUpdating] = useState(false);
 
   const keyUpTimerId = useRef(null);
+  const positionTimerId = useRef(null);
 
   let mouseStartPosition = { x: 0, y: 0 };
   const cardRef = useRef(null);
@@ -47,6 +48,8 @@ export default function Card({ note }) {
   }
 
   function mouseUp() {
+    setUpdating(true);
+
     document.removeEventListener("mousemove", mouseMove);
     document.removeEventListener("mouseup", mouseUp);
 
@@ -60,7 +63,11 @@ export default function Card({ note }) {
       y: parseInt(cardRef.current.style.top),
     };
 
-    updateNotes(note.id, "position", newPosition);
+    if (positionTimerId.current) clearTimeout(positionTimerId.current);
+
+    positionTimerId.current = setTimeout(() => {
+      updateNotes(note.id, "position", newPosition, setUpdating);
+    }, 1500);
   }
 
   async function handleKeyUp() {
@@ -70,7 +77,6 @@ export default function Card({ note }) {
 
     keyUpTimerId.current = setTimeout(() => {
       updateNotes(note.id, "body", textAreaRef.current.value, setUpdating);
-      console.log("updating")
     }, 1500);
   }
 
@@ -90,6 +96,11 @@ export default function Card({ note }) {
         onMouseDown={mouseDown}
       >
         <Trash />
+        {updating && (
+          <div className="card-updating">
+            <span style={{ color: colors.colorText }}>Updating...</span>
+          </div>
+        )}
       </div>
       <div className="card-body rounded-b p-4">
         <textarea
