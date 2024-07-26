@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card.jsx";
 import { getNotes } from "../supabase/apiNotes.js";
 import Controls from "../components/Controls.jsx";
+import Spinner from "../icons/Spinner.jsx";
 
 export default function NotesPage() {
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const notesData = await getNotes();
+      const notesData = await getNotes(setLoading);
       setNotes(notesData);
     };
     fetchNotes();
@@ -16,10 +18,18 @@ export default function NotesPage() {
 
   return (
     <div>
-      {notes.map((note) => (
-        <Card key={note.id} note={note} />
-      ))}
-      <Controls />
+      {loading ? (
+        <div style={{height: "100vh"}} className="flex items-center justify-center h">
+          <Spinner color="black" size="25" />
+        </div>
+      ) : (
+        <>
+          {notes.map((note) => (
+            <Card key={note.id} note={note} />
+          ))}
+          <Controls />
+        </>
+      )}
     </div>
   );
 }

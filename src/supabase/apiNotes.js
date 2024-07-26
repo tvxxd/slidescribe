@@ -1,13 +1,15 @@
 import supabase from "./supabase";
 
-export async function getNotes() {
-  let { data, error } = await supabase.from("notes").select("*");
-
-  if (error) {
+export async function getNotes(setLoading) {
+  try {
+    let { data, error } = await supabase.from("notes").select("*");
+    if (error) throw error;
+    return data;
+  } catch (error) {
     return [];
+  } finally {
+    setLoading(false);
   }
-
-  return data;
 }
 
 export async function updateNotes(id, key, value, callback) {
