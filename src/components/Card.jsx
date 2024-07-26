@@ -5,11 +5,15 @@ import { autoGrow } from "../utils/autoGrow";
 import { bodyParser } from "../utils/bodyParser";
 import { setZIndex } from "../utils/zIndex";
 import { updateNotes } from "../supabase/apiNotes";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 export default function Card({ note }) {
   const body = bodyParser(note.body);
   const colors = JSON.parse(note.colors);
   const [position, setPosition] = useState(JSON.parse(note.position));
+  const [updating, setUpdating] = useState(false);
+
+  const keyUpTimerId = useRef(null);
 
   let mouseStartPosition = { x: 0, y: 0 };
   const cardRef = useRef(null);
@@ -59,6 +63,17 @@ export default function Card({ note }) {
     updateNotes(note.id, "position", newPosition);
   }
 
+  async function handleKeyUp() {
+    setUpdating(true);
+
+    if (keyUpTimerId.current) clearTimeout(keyUpTimerId.current);
+
+    keyUpTimerId.current = setTimeout(() => {
+      updateNotes(note.id, "body", textAreaRef.current.value, setUpdating);
+      console.log("updating")
+    }, 1500);
+  }
+
   return (
     <div
       ref={cardRef}
@@ -79,12 +94,12 @@ export default function Card({ note }) {
       <div className="card-body rounded-b p-4">
         <textarea
           ref={textAreaRef}
+          onKeyUp={handleKeyUp}
           className=" bg-inherit border-0 w-full h-full resize-none text-base focus:outline-none focus:w-full focus:h-full"
           style={{ color: colors.colorText }}
           defaultValue={body}
           onInput={() => {
             autoGrow(textAreaRef);
-            updateNotes(note.id, "body", textAreaRef.current.value);
           }}
           onFocus={() => setZIndex(cardRef.current)}
         ></textarea>

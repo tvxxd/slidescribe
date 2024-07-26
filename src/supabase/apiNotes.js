@@ -10,7 +10,7 @@ export async function getNotes() {
   return data;
 }
 
-export async function updateNotes(id, key, value) {
+export async function updateNotes(id, key, value, callback) {
   const payload = { [key]: JSON.stringify(value) };
   const { data, error } = await supabase
     .from("notes")
@@ -18,5 +18,8 @@ export async function updateNotes(id, key, value) {
     .eq("id", id);
   if (error) {
     throw error;
+  }
+  if (callback) {
+    callback(true);
   }
 }
