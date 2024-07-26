@@ -19,8 +19,8 @@ export default function NotesPage() {
   return (
     <div>
       {loading ? (
-        <div style={{height: "100vh"}} className="flex items-center justify-center h">
-          <Spinner color="black" size="25" />
+        <div className="flex items-center justify-center h-screen">
+          <Spinner color="black" size="40" />
         </div>
       ) : (
         <>
