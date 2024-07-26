@@ -22,6 +22,7 @@ export default function Card({ note }) {
   const textAreaRef = useRef(null);
   useEffect(() => {
     autoGrow(textAreaRef);
+    setZIndex(cardRef.current);
   }, []);
 
   function mouseDown(e) {
@@ -47,21 +48,13 @@ export default function Card({ note }) {
     setPosition(newPosition);
   }
 
-  function mouseUp() {
+  async function mouseUp() {
     setUpdating(true);
 
     document.removeEventListener("mousemove", mouseMove);
     document.removeEventListener("mouseup", mouseUp);
 
-    /*
-      since state updates are asynchronous, 'pos' might not be updated
-      when calling updateNotes(). pass 'pos' directly to updateNotes.
-    */
-
-    const newPosition = {
-      x: parseInt(cardRef.current.style.left),
-      y: parseInt(cardRef.current.style.top),
-    };
+    const newPosition = setNewOffset(cardRef.current);
 
     if (positionTimerId.current) clearTimeout(positionTimerId.current);
 
