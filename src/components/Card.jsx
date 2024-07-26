@@ -5,7 +5,7 @@ import { autoGrow } from "../utils/autoGrow";
 import { bodyParser } from "../utils/bodyParser";
 import { setZIndex } from "../utils/zIndex";
 import { updateNotes } from "../supabase/apiNotes";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../icons/Spinner";
 
 export default function Card({ note }) {
   const body = bodyParser(note.body);
@@ -97,8 +97,9 @@ export default function Card({ note }) {
       >
         <Trash />
         {updating && (
-          <div className="card-updating">
-            <span style={{ color: colors.colorText }}>Updating...</span>
+          <div className="card-updating flex items-center gap-[5px]">
+            <Spinner color={colors.colorText} />
+            <span style={{ color: colors.colorText }}>Updating</span>
           </div>
         )}
       </div>
