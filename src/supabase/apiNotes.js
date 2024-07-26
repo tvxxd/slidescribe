@@ -25,3 +25,8 @@ export async function updateNotes(id, key, value, callback) {
     callback(false);
   }
 }
+
+export async function deleteNotes(id) {
+  const { error } = await supabase.from("notes").delete().eq("id", id);
+  if (error) throw error;
+}

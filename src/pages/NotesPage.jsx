@@ -25,7 +25,7 @@ export default function NotesPage() {
       ) : (
         <>
           {notes.map((note) => (
-            <Card key={note.id} note={note} />
+            <Card key={note.id} note={note} setNotes={setNotes} />
           ))}
           <Controls />
         </>

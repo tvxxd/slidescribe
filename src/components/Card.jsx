@@ -6,8 +6,9 @@ import { bodyParser } from "../utils/bodyParser";
 import { setZIndex } from "../utils/zIndex";
 import { updateNotes } from "../supabase/apiNotes";
 import Spinner from "../icons/Spinner";
+import DeleteButton from "./DeleteButton";
 
-export default function Card({ note }) {
+export default function Card({ note, setNotes }) {
   const body = bodyParser(note.body);
   const colors = JSON.parse(note.colors);
   const [position, setPosition] = useState(JSON.parse(note.position));
@@ -88,7 +89,7 @@ export default function Card({ note }) {
         style={{ backgroundColor: colors.colorHeader }}
         onMouseDown={mouseDown}
       >
-        <Trash />
+        <DeleteButton noteId={note.id} setNotes={setNotes} />
         {updating && (
           <div className="card-updating flex items-center gap-[5px]">
             <Spinner color={colors.colorText} />
