@@ -20,6 +20,6 @@ export async function updateNotes(id, key, value, callback) {
     throw error;
   }
   if (callback) {
-    callback(true);
+    callback(false);
   }
 }
