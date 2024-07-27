@@ -1,5 +1,4 @@
 import supabase from "./supabase";
-
 export async function getNotes(setLoading) {
   try {
     let { data, error } = await supabase.from("notes").select("*");
@@ -29,4 +28,13 @@ export async function updateNotes(id, key, value, callback) {
 export async function deleteNotes(id) {
   const { error } = await supabase.from("notes").delete().eq("id", id);
   if (error) throw error;
+}
+
+export async function createNote(payload) {
+  const { data, error } = await supabase
+    .from("notes")
+    .insert([{ position: payload.position, colors: payload.colors }])
+    .select();
+  if (error) throw error;
+  return data[0];
 }
