@@ -7,7 +7,8 @@ import Spinner from "../icons/Spinner.jsx";
 export default function NotesPage() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [selectedNote, setSelectedNote] = useState(null);
+  
   useEffect(() => {
     const fetchNotes = async () => {
       const notesData = await getNotes(setLoading);
@@ -25,9 +26,18 @@ export default function NotesPage() {
       ) : (
         <>
           {notes.map((note) => (
-            <Card key={note.id} note={note} setNotes={setNotes} />
+            <Card
+              onSetSelectedNote={setSelectedNote}
+              key={note.id}
+              note={note}
+              setNotes={setNotes}
+            />
           ))}
-          <Controls onSetNotes={setNotes} />
+          <Controls
+            notes={notes}
+            onSelectedNote={selectedNote}
+            onSetNotes={setNotes}
+          />
         </>
       )}
     </div>

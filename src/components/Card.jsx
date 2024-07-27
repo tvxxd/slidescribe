@@ -8,7 +8,7 @@ import { updateNotes } from "../supabase/apiNotes";
 import Spinner from "../icons/Spinner";
 import DeleteButton from "./DeleteButton";
 
-export default function Card({ note, setNotes }) {
+export default function Card({ note, setNotes, onSetSelectedNote }) {
   const body = bodyParser(note.body);
   const colors = JSON.parse(note.colors);
   const [position, setPosition] = useState(JSON.parse(note.position));
@@ -27,12 +27,15 @@ export default function Card({ note, setNotes }) {
   }, []);
 
   function mouseDown(e) {
-    setZIndex(cardRef.current);
-    mouseStartPosition.x = e.clientX;
-    mouseStartPosition.y = e.clientY;
+    if (e.target.className.includes("card-header")) {
+      setZIndex(cardRef.current);
+      mouseStartPosition.x = e.clientX;
+      mouseStartPosition.y = e.clientY;
 
-    document.addEventListener("mousemove", mouseMove);
-    document.addEventListener("mouseup", mouseUp);
+      document.addEventListener("mousemove", mouseMove);
+      document.addEventListener("mouseup", mouseUp);
+      onSetSelectedNote(note);
+    }
   }
 
   function mouseMove(e) {

@@ -2,7 +2,7 @@ import AddButton from "./AddButton";
 import colors from "../assets/colors.json";
 import Color from "./Color";
 
-export default function Controls({ onSetNotes }) {
+export default function Controls({ onSetNotes, onSelectedNote, notes }) {
   return (
     <div
       id="controls"
@@ -10,7 +10,13 @@ export default function Controls({ onSetNotes }) {
     >
       <AddButton setNotes={onSetNotes} />
       {colors.map((color) => (
-        <Color key={color.id} color={color} />
+        <Color
+          notes={notes}
+          onSetNotes={onSetNotes}
+          selectedNote={onSelectedNote}
+          key={color.id}
+          color={color}
+        />
       ))}
     </div>
   );
