@@ -7,12 +7,13 @@ export default function AddButton({ setNotes }) {
   const startingPosition = useRef(50);
 
   async function addNote() {
+    const randomInt = Math.floor(Math.random() * colors.length)
     const payload = {
       position: JSON.stringify({
         x: startingPosition.current,
         y: startingPosition.current,
       }),
-      colors: JSON.stringify(colors[0]),
+      colors: JSON.stringify(colors[randomInt]),
     };
     const response = await createNote(payload);
     setNotes((prevState) => [response, ...prevState]);
