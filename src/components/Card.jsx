@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import Trash from "../icons/Trash";
 import { setNewOffset } from "../utils/setNewOffset";
 import { autoGrow } from "../utils/autoGrow";
 import { bodyParser } from "../utils/bodyParser";
@@ -17,7 +16,7 @@ export default function Card({ note, setNotes, onSetSelectedNote }) {
   const keyUpTimerId = useRef(null);
   const positionTimerId = useRef(null);
 
-  let mouseStartPosition = { x: 0, y: 0 };
+  let startPosition = { x: 0, y: 0 };
   const cardRef = useRef(null);
 
   const textAreaRef = useRef(null);
@@ -29,8 +28,8 @@ export default function Card({ note, setNotes, onSetSelectedNote }) {
   function mouseDown(e) {
     if (e.target.className.includes("card-header")) {
       setZIndex(cardRef.current);
-      mouseStartPosition.x = e.clientX;
-      mouseStartPosition.y = e.clientY;
+      startPosition.x = e.clientX;
+      startPosition.y = e.clientY;
 
       document.addEventListener("mousemove", mouseMove);
       document.addEventListener("mouseup", mouseUp);
@@ -40,12 +39,12 @@ export default function Card({ note, setNotes, onSetSelectedNote }) {
 
   function mouseMove(e) {
     const mouseMoveDirection = {
-      x: mouseStartPosition.x - e.clientX,
-      y: mouseStartPosition.y - e.clientY,
+      x: startPosition.x - e.clientX,
+      y: startPosition.y - e.clientY,
     };
 
-    mouseStartPosition.x = e.clientX;
-    mouseStartPosition.y = e.clientY;
+    startPosition.x = e.clientX;
+    startPosition.y = e.clientY;
 
     const newPosition = setNewOffset(cardRef.current, mouseMoveDirection);
 
@@ -60,6 +59,45 @@ export default function Card({ note, setNotes, onSetSelectedNote }) {
 
     const newPosition = setNewOffset(cardRef.current);
 
+    if (positionTimerId.current) clearTimeout(positionTimerId.current);
+
+    positionTimerId.current = setTimeout(() => {
+      updateNotes(note.id, "position", newPosition, setUpdating);
+    }, 1500);
+  }
+
+  function touchStart(e) {
+    if (e.target.className.includes("card-header")) {
+      setZIndex(cardRef.current);
+      startPosition.x = e.touches[0].clientX;
+      startPosition.y = e.touches[0].clientY;
+
+      document.addEventListener("touchmove", touchMove);
+      document.addEventListener("touchend", touchEnd);
+      onSetSelectedNote(note);
+    }
+  }
+
+  function touchMove(e) {
+    const moveDirection = {
+      x: startPosition.x - e.touches[0].clientX,
+      y: startPosition.y - e.touches[0].clientY,
+    };
+
+    startPosition.x = e.touches[0].clientX;
+    startPosition.y = e.touches[0].clientY;
+
+    const newPosition = setNewOffset(cardRef.current, moveDirection);
+    setPosition(newPosition);
+  }
+
+  async function touchEnd() {
+    setUpdating(true);
+
+    document.removeEventListener("touchmove", touchMove);
+    document.removeEventListener("touchend", touchEnd);
+
+    const newPosition = setNewOffset(cardRef.current);
     if (positionTimerId.current) clearTimeout(positionTimerId.current);
 
     positionTimerId.current = setTimeout(() => {
@@ -91,6 +129,7 @@ export default function Card({ note, setNotes, onSetSelectedNote }) {
         className="card-header rounded-t flex justify-between items-center p-[5px]"
         style={{ backgroundColor: colors.colorHeader }}
         onMouseDown={mouseDown}
+        onTouchStart={touchStart}
       >
         <DeleteButton noteId={note.id} setNotes={setNotes} />
         {updating && (
